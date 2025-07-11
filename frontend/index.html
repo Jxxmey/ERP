@@ -11,14 +11,14 @@
     <style>
         body {
             font-family: 'Inter', sans-serif;
-            background-color: #f3f4f6; /* Light gray background */
+            background-color: #f3f4f6; /* พื้นหลังสีเทาอ่อน */
         }
         .card {
             background-color: white;
-            border-radius: 1rem; /* Rounded corners */
+            border-radius: 1rem; /* มุมโค้งมน */
             box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
             padding: 2rem;
-            max-width: 600px; /* Increased max-width for side-by-side forms */
+            max-width: 600px; /* ความกว้างสูงสุดสำหรับฟอร์มแบบเรียงข้าง */
             width: 90%;
         }
         .input-group {
@@ -29,7 +29,7 @@
             margin-bottom: 0.5rem;
             font-size: 0.9rem;
             font-weight: 500;
-            color: #4b5563; /* Gray 600 */
+            color: #4b5563; /* สีเทา 600 */
         }
         .input-field {
             width: 100%;
@@ -39,8 +39,8 @@
             font-size: 1rem;
         }
         .btn-primary {
-            /* Orange color scheme */
-            background-color: #f97316; /* Orange 500 */
+            /* โทนสีส้ม */
+            background-color: #f97316; /* ส้ม 500 */
             color: white;
             padding: 0.75rem 1.5rem;
             border-radius: 0.5rem;
@@ -50,10 +50,10 @@
             width: 100%;
         }
         .btn-primary:hover {
-            background-color: #ea580c; /* Orange 600 */
+            background-color: #ea580c; /* ส้ม 600 */
         }
         .btn-secondary {
-            background-color: #6b7280; /* Gray */
+            background-color: #6b7280; /* สีเทา */
             color: white;
             padding: 0.75rem 1.5rem;
             border-radius: 0.5rem;
@@ -63,45 +63,45 @@
             width: 100%;
         }
         .btn-secondary:hover {
-            background-color: #4b5563; /* Darker gray */
+            background-color: #4b5563; /* สีเทาเข้ม */
         }
         .alert {
             padding: 0.75rem 1.25rem;
             margin-bottom: 1rem;
             border-radius: 0.5rem;
             font-size: 0.9rem;
-            display: none; /* Hidden by default */
+            display: none; /* ซ่อนไว้โดยค่าเริ่มต้น */
         }
         .alert-success {
-            background-color: #d1fae5; /* Green light */
-            color: #065f46; /* Green dark */
+            background-color: #d1fae5; /* เขียวอ่อน */
+            color: #065f46; /* เขียวเข้ม */
             border: 1px solid #10b981;
         }
         .alert-error {
-            background-color: #fee2e2; /* Red light */
-            color: #991b1b; /* Red dark */
+            background-color: #fee2e2; /* แดงอ่อน */
+            color: #991b1b; /* แดงเข้ม */
             border: 1px solid #ef4444;
         }
         .hidden {
             display: none;
         }
         .text-link {
-            /* Orange color scheme */
-            color: #f97316; /* Orange 500 */
+            /* โทนสีส้ม */
+            color: #f97316; /* ส้ม 500 */
             cursor: pointer;
             text-decoration: underline;
         }
         .text-link:hover {
-            color: #ea580c; /* Orange 600 */
+            color: #ea580c; /* ส้ม 600 */
         }
-        /* Flex container for side-by-side inputs */
+        /* Flex container สำหรับช่องกรอกข้อมูลแบบเรียงข้าง */
         .form-row {
             display: grid;
             grid-template-columns: 1fr;
             gap: 1rem;
-            margin-bottom: 1rem; /* Add margin below the row */
+            margin-bottom: 1rem; /* เพิ่มระยะห่างใต้แถว */
         }
-        @media (min-width: 640px) { /* Tailwind's sm breakpoint */
+        @media (min-width: 640px) { /* breakpoint 'sm' ของ Tailwind */
             .form-row.grid-2-cols {
                 grid-template-columns: repeat(2, 1fr);
             }
@@ -109,7 +109,7 @@
     </style>
 </head>
 <body class="flex items-center justify-center min-h-screen">
-
+    <!-- GitHub Pages Test Build -->
     <!-- Registration Page -->
     <div id="registrationPage" class="card text-center">
         <h2 class="text-2xl font-bold mb-6 text-gray-800">ลงทะเบียน</h2>
@@ -154,32 +154,35 @@
         <p class="text-gray-600 mb-4">โปรดตั้งค่าข้อมูลบริษัทและสร้างบัญชีพนักงานคนแรกของคุณ</p>
         <div id="setupCompanyAlert" class="alert hidden"></div>
 
-        <h3 class="text-xl font-semibold mb-3 text-gray-700">ข้อมูลบริษัท</h3>
-        <div class="input-group">
-            <label for="companyName">ชื่อบริษัท</label>
-            <input type="text" id="companyName" class="input-field">
-        </div>
-        <div class="input-group">
-            <label for="companyAddress">ที่อยู่บริษัท</label>
-            <input type="text" id="companyAddress" class="input-field">
-        </div>
-        <div class="form-row grid-2-cols">
+        <!-- Company Setup Section - แสดงก่อน -->
+        <div id="companyFormSection">
+            <h3 class="text-xl font-semibold mb-3 text-gray-700">ข้อมูลบริษัท</h3>
             <div class="input-group">
-                <label for="companyTaxId">เลขประจำตัวผู้เสียภาษี</label>
-                <input type="text" id="companyTaxId" class="input-field">
+                <label for="companyName">ชื่อบริษัท</label>
+                <input type="text" id="companyName" class="input-field">
             </div>
             <div class="input-group">
-                <label for="companyPhone">เบอร์โทรศัพท์บริษัท</label>
-                <input type="text" id="companyPhone" class="input-field">
+                <label for="companyAddress">ที่อยู่บริษัท</label>
+                <input type="text" id="companyAddress" class="input-field">
             </div>
+            <div class="form-row grid-2-cols">
+                <div class="input-group">
+                    <label for="companyTaxId">เลขประจำตัวผู้เสียภาษี</label>
+                    <input type="text" id="companyTaxId" class="input-field">
+                </div>
+                <div class="input-group">
+                    <label for="companyPhone">เบอร์โทรศัพท์บริษัท</label>
+                    <input type="text" id="companyPhone" class="input-field">
+                </div>
+            </div>
+            <div class="input-group">
+                <label for="companyEmail">อีเมลบริษัท</label>
+                <input type="email" id="companyEmail" class="input-field">
+            </div>
+            <button id="createCompanyBtn" class="btn-primary mb-6">สร้างบริษัท</button>
         </div>
-        <div class="input-group">
-            <label for="companyEmail">อีเมลบริษัท</label>
-            <input type="email" id="companyEmail" class="input-field">
-        </div>
-        <button id="createCompanyBtn" class="btn-primary mb-6">สร้างบริษัท</button>
 
-        <!-- Employee Setup Section - Initially Hidden -->
+        <!-- Employee Setup Section - ซ่อนไว้ก่อน -->
         <div id="employeeSetupSection" class="hidden">
             <h3 class="text-xl font-semibold mb-3 text-gray-700">พนักงานคนแรก (ตัวคุณเอง)</h3>
             <p class="text-gray-600 mb-4">ข้อมูลนี้จะถูกเชื่อมโยงกับบัญชีผู้ดูแลหลักของคุณ</p>
@@ -245,7 +248,7 @@
     <div id="mainAppDashboard" class="card text-center hidden">
         <h2 class="text-2xl font-bold mb-6 text-gray-800">ยินดีต้อนรับสู่ระบบ!</h2>
         <p class="text-gray-600 mb-4">คุณเข้าสู่ระบบในฐานะ: <span id="loggedInUserType" class="font-semibold"></span></p>
-        <p class="text-600 mb-4">ชื่อผู้ใช้: <span id="loggedInUsername" class="font-semibold"></span></p>
+        <p class="text-gray-600 mb-4">ชื่อผู้ใช้: <span id="loggedInUsername" class="font-semibold"></span></p>
         <p class="text-gray-600 mb-4">บริษัท: <span id="loggedInCompanyName" class="font-semibold"></span></p>
         <p class="text-gray-600 mb-4">สาขา: <span id="loggedInBranchName" class="font-semibold"></span></p>
         <button id="logoutBtn" class="btn-secondary">ออกจากระบบ</button>
@@ -253,11 +256,11 @@
 
     <script>
         // --- Configuration ---
-        const API_BASE_URL = 'http://localhost:3000/api'; // Your backend API URL
-        const LOCAL_STORAGE_KEY_COMPANY_ID = 'erp_company_id'; // Stores the main user's company ID
-        const LOCAL_STORAGE_KEY_BRANCH_ID = 'erp_branch_id'; // Stores the main user's default branch ID (optional for web, more for EXE)
+        const API_BASE_URL = 'http://localhost:3000/api'; // URL ของ Backend API ของคุณ
+        const LOCAL_STORAGE_KEY_COMPANY_ID = 'erp_company_id'; // เก็บ Company ID ของ Main User
+        const LOCAL_STORAGE_KEY_BRANCH_ID = 'erp_branch_id'; // เก็บ Branch ID เริ่มต้นของ Main User (ไม่บังคับสำหรับเว็บ, สำคัญกว่าสำหรับ EXE)
         const LOCAL_STORAGE_KEY_COMPANY_NAME = 'erp_company_name';
-        const LOCAL_STORAGE_KEY_BRANCH_NAME = 'erp_branch_name'; // For display on dashboard
+        const LOCAL_STORAGE_KEY_BRANCH_NAME = 'erp_branch_name'; // สำหรับแสดงบน Dashboard
 
         // --- DOM Elements ---
         const registrationPage = document.getElementById('registrationPage');
@@ -277,6 +280,7 @@
         const loginAlert = document.getElementById('loginAlert');
 
         const setupCompanyAlert = document.getElementById('setupCompanyAlert');
+        const companyFormSection = document.getElementById('companyFormSection'); // ส่วนฟอร์มข้อมูลบริษัท
         const companyNameInput = document.getElementById('companyName');
         const companyAddressInput = document.getElementById('companyAddress');
         const companyTaxIdInput = document.getElementById('companyTaxId');
@@ -285,7 +289,7 @@
         const createCompanyBtn = document.getElementById('createCompanyBtn');
 
         // Employee Setup Section elements
-        const employeeSetupSection = document.getElementById('employeeSetupSection');
+        const employeeSetupSection = document.getElementById('employeeSetupSection'); // ส่วนฟอร์มข้อมูลพนักงาน
         const employeeFirstNameInput = document.getElementById('employeeFirstName');
         const employeeLastNameInput = document.getElementById('employeeLastName');
         const employeeThaiIdInput = document.getElementById('employeeThaiId');
@@ -302,18 +306,18 @@
         const loggedInUserType = document.getElementById('loggedInUserType');
         const loggedInUsername = document.getElementById('loggedInUsername');
         const loggedInCompanyName = document.getElementById('loggedInCompanyName');
-        const loggedInBranchName = document.getElementById('loggedInBranchName'); // Will be N/A for web app unless a default branch is set
+        const loggedInBranchName = document.getElementById('loggedInBranchName'); // จะเป็น N/A สำหรับเว็บแอป เว้นแต่จะมีการตั้งค่า Branch เริ่มต้น
 
-        let currentUser = null; // Stores user data from JWT payload
-        let currentToken = null; // Stores JWT token
+        let currentUser = null; // เก็บข้อมูลผู้ใช้จาก JWT payload
+        let currentToken = null; // เก็บ JWT token
 
         // --- Utility Functions ---
 
         /**
-         * Displays an alert message.
-         * @param {HTMLElement} element - The alert div element.
-         * @param {string} message - The message to display.
-         * @param {string} type - 'success' or 'error'.
+         * แสดงข้อความแจ้งเตือน
+         * @param {HTMLElement} element - Element div สำหรับแสดงข้อความแจ้งเตือน
+         * @param {string} message - ข้อความที่จะแสดง
+         * @param {string} type - 'success' หรือ 'error'
          */
         function showAlert(element, message, type) {
             element.textContent = message;
@@ -322,15 +326,15 @@
         }
 
         /**
-         * Hides an alert message.
-         * @param {HTMLElement} element - The alert div element.
+         * ซ่อนข้อความแจ้งเตือน
+         * @param {HTMLElement} element - Element div สำหรับแสดงข้อความแจ้งเตือน
          */
         function hideAlert(element) {
             element.style.display = 'none';
         }
 
         /**
-         * Hides all main content pages.
+         * ซ่อนหน้าเนื้อหาหลักทั้งหมด
          */
         function hideAllPages() {
             registrationPage.classList.add('hidden');
@@ -340,22 +344,22 @@
         }
 
         /**
-         * Shows a specific page and hides others.
-         * @param {string} pageId - The ID of the page to show.
+         * แสดงหน้าเฉพาะที่ระบุและซ่อนหน้าอื่น
+         * @param {string} pageId - ID ของหน้าที่ต้องการแสดง
          */
         function showPage(pageId) {
             hideAllPages();
             document.getElementById(pageId).classList.remove('hidden');
-            // Clear alerts when switching pages
+            // ล้างข้อความแจ้งเตือนเมื่อเปลี่ยนหน้า
             hideAlert(registerAlert);
             hideAlert(loginAlert);
             hideAlert(setupCompanyAlert);
         }
 
         /**
-         * Stores user token and data in session storage.
-         * @param {string} token - JWT token.
-         * @param {object} user - User data.
+         * เก็บ token ผู้ใช้และข้อมูลผู้ใช้ใน session storage
+         * @param {string} token - JWT token
+         * @param {object} user - ข้อมูลผู้ใช้
          */
         function setSession(token, user) {
             sessionStorage.setItem('jwt_token', token);
@@ -365,7 +369,7 @@
         }
 
         /**
-         * Clears user session.
+         * ล้าง session ผู้ใช้
          */
         function clearSession() {
             sessionStorage.removeItem('jwt_token');
@@ -379,7 +383,7 @@
         }
 
         /**
-         * Loads user session from storage.
+         * โหลด session ผู้ใช้จาก storage
          */
         function loadSession() {
             currentToken = sessionStorage.getItem('jwt_token');
@@ -387,13 +391,13 @@
             if (currentToken && userString) {
                 currentUser = JSON.parse(userString);
             } else {
-                clearSession(); // Ensure consistency
+                clearSession(); // ตรวจสอบความสอดคล้อง
             }
         }
 
         /**
-         * Fetches companies for the logged-in main user.
-         * @returns {Promise<Array>} List of companies.
+         * ดึงข้อมูลบริษัทสำหรับ main user ที่เข้าสู่ระบบ
+         * @returns {Promise<Array>} รายการบริษัท
          */
         async function fetchCompanies() {
             try {
@@ -415,9 +419,9 @@
         }
 
         /**
-         * Fetches employee details for the current user.
-         * @param {number} employeeId - The employee ID.
-         * @returns {Promise<object|null>} Employee details or null.
+         * ดึงข้อมูลพนักงานสำหรับผู้ใช้ปัจจุบัน
+         * @param {number} employeeId - ID พนักงาน
+         * @returns {Promise<object|null>} รายละเอียดพนักงานหรือ null
          */
         async function fetchEmployeeDetails(employeeId) {
             if (!employeeId) return null;
@@ -438,82 +442,85 @@
             }
         }
 
+        /**
+         * ดึงข้อมูลสาขาสำหรับผู้ใช้ปัจจุบัน
+         * @param {string} token - JWT token สำหรับการอนุญาต
+         * @returns {Promise<Array>} รายการสาขา
+         */
+        async function fetchBranches(token) {
+            try {
+                const response = await fetch(`${API_BASE_URL}/branches`, {
+                    headers: {
+                        'Authorization': `Bearer ${token}`
+                    }
+                });
+                if (!response.ok) {
+                    const errorData = await response.json();
+                    throw new Error(errorData.message || 'Failed to fetch branches');
+                }
+                return await response.json();
+            } catch (error) {
+                console.error('Error fetching branches:', error);
+                return [];
+            }
+        }
 
         // --- Core Application Flow ---
 
         /**
-         * Checks authentication status and renders the appropriate page.
+         * ตรวจสอบสถานะการยืนยันตัวตนและแสดงหน้าที่เหมาะสม
          */
         async function checkAuthAndRender() {
-            loadSession(); // Load token and user from session storage
+            loadSession(); // โหลด token และผู้ใช้จาก session storage
 
             if (!currentToken || !currentUser) {
-                showPage('loginPage'); // No token, show login page
+                showPage('loginPage'); // ไม่มี token, แสดงหน้า login
                 return;
             }
 
-            // Verify token validity by making a simple authenticated request
+            // ตรวจสอบความถูกต้องของ token โดยการเรียก request ที่มีการยืนยันตัวตนง่ายๆ
             try {
                 const response = await fetch(`${API_BASE_URL}/users/${currentUser.user_id}`, {
                     headers: { 'Authorization': `Bearer ${currentToken}` }
                 });
 
                 if (!response.ok) {
-                    // Token expired or invalid, clear session and show login
+                    // Token หมดอายุหรือไม่ถูกต้อง, ล้าง session และแสดงหน้า login
                     clearSession();
                     showPage('loginPage');
                     showAlert(loginAlert, 'เซสชันหมดอายุหรือโทเค็นไม่ถูกต้อง โปรดเข้าสู่ระบบอีกครั้ง.', 'error');
                     return;
                 }
 
-                // Token is valid, proceed based on user type and setup status
-                const freshUserData = await response.json(); // Get fresh user data
-                currentUser = freshUserData; // Update currentUser with fresh data
+                // Token ถูกต้อง, ดำเนินการตามประเภทผู้ใช้และสถานะการตั้งค่า
+                const freshUserData = await response.json(); // ดึงข้อมูลผู้ใช้ล่าสุด
+                currentUser = freshUserData; // อัปเดต currentUser ด้วยข้อมูลล่าสุด
 
                 if (currentUser.user_type === 'main') {
                     const companies = await fetchCompanies();
                     const employeeDetails = await fetchEmployeeDetails(currentUser.employee_id);
 
-                    if (companies.length === 0 || !employeeDetails) {
-                        // Main user needs to set up company or their own employee record
-                        showPage('companyEmployeeSetupPage');
-                        // Always hide employee setup section initially when showing this page
-                        employeeSetupSection.classList.add('hidden'); 
-                        
-                        // If company already exists but employee doesn't, show employee section
-                        if (companies.length > 0 && !employeeDetails) {
-                            companyNameInput.value = companies[0].company_name;
-                            companyAddressInput.value = companies[0].address || '';
-                            companyTaxIdInput.value = companies[0].tax_id || '';
-                            companyPhoneInput.value = companies[0].phone || '';
-                            companyEmailInput.value = companies[0].email || '';
+                    showPage('companyEmployeeSetupPage'); // แสดงหน้าตั้งค่าบริษัทและพนักงาน
 
-                            // Disable company fields
-                            companyNameInput.disabled = true;
-                            companyAddressInput.disabled = true;
-                            companyTaxIdInput.disabled = true;
-                            companyPhoneInput.disabled = true;
-                            companyEmailInput.disabled = true;
-                            createCompanyBtn.disabled = true;
-                            showAlert(setupCompanyAlert, 'บริษัทของคุณถูกสร้างแล้ว โปรดสร้างบัญชีพนักงานคนแรก.', 'success');
-                            employeeSetupSection.classList.remove('hidden'); // Show employee section
-                        } else {
-                            // No company yet, ensure company fields are enabled
-                            companyNameInput.disabled = false;
-                            companyAddressInput.disabled = false;
-                            companyTaxIdInput.disabled = false;
-                            companyPhoneInput.disabled = false;
-                            companyEmailInput.disabled = false;
-                            createCompanyBtn.disabled = false;
-                        }
-                        return;
+                    if (companies.length === 0) {
+                        // Main user ยังไม่มีบริษัท, แสดงฟอร์มสร้างบริษัท
+                        companyFormSection.classList.remove('hidden');
+                        employeeSetupSection.classList.add('hidden'); // ซ่อนส่วนพนักงาน
+                    } else if (!employeeDetails) {
+                        // Main user มีบริษัทแล้ว แต่ยังไม่มีข้อมูลพนักงาน
+                        companyFormSection.classList.add('hidden'); // ซ่อนส่วนบริษัท
+                        employeeSetupSection.classList.remove('hidden'); // แสดงส่วนพนักงาน
+                        showAlert(setupCompanyAlert, 'บริษัทของคุณถูกสร้างแล้ว โปรดสร้างบัญชีพนักงานคนแรก.', 'success');
+                        // Pre-fill employee email if available from user account
+                        employeeEmailInput.value = currentUser.username; // สมมติว่า username คือ email หรือสามารถใช้เป็น email ได้
                     } else {
-                        // Main user has company and employee setup, proceed to dashboard
+                        // Main user มีบริษัทและพนักงานครบแล้ว, ไปที่ Dashboard
                         localStorage.setItem(LOCAL_STORAGE_KEY_COMPANY_ID, companies[0].company_id);
                         localStorage.setItem(LOCAL_STORAGE_KEY_COMPANY_NAME, companies[0].company_name);
-                        // Assuming first branch for simplicity, or fetch and store a default branch
-                        const branches = await fetchBranches(currentToken); // Assuming fetchBranches exists
-                        const defaultBranch = branches.find(b => b.company_id === companies[0].company_id); // Find a branch for this company
+                        
+                        // ดึงและเก็บข้อมูลสาขาเริ่มต้น (ถ้ามี)
+                        const branches = await fetchBranches(currentToken);
+                        const defaultBranch = branches.find(b => b.company_id === companies[0].company_id);
                         if (defaultBranch) {
                             localStorage.setItem(LOCAL_STORAGE_KEY_BRANCH_ID, defaultBranch.branch_id);
                             localStorage.setItem(LOCAL_STORAGE_KEY_BRANCH_NAME, defaultBranch.branch_name);
@@ -524,7 +531,7 @@
                         renderDashboard();
                     }
                 } else {
-                    // Employee or Super Admin, go directly to dashboard
+                    // Employee หรือ Super Admin, ไปที่ Dashboard ได้เลย
                     renderDashboard();
                 }
 
@@ -537,7 +544,7 @@
         }
 
         /**
-         * Renders the main application dashboard.
+         * แสดงหน้า Dashboard หลักของแอปพลิเคชัน
          */
         async function renderDashboard() {
             showPage('mainAppDashboard');
@@ -545,20 +552,20 @@
             loggedInUserType.textContent = currentUser.user_type;
             loggedInUsername.textContent = currentUser.username;
 
-            // Display company/branch info based on stored config or user data
+            // แสดงข้อมูลบริษัท/สาขาตาม config ที่เก็บไว้หรือข้อมูลผู้ใช้
             const companyName = localStorage.getItem(LOCAL_STORAGE_KEY_COMPANY_NAME) || 'N/A';
             const branchName = localStorage.getItem(LOCAL_STORAGE_KEY_BRANCH_NAME) || 'N/A';
 
             loggedInCompanyName.textContent = companyName;
             loggedInBranchName.textContent = branchName;
 
-            // In a real app, this would load actual dashboard content (e.g., summary, quick links)
-            // For now, it's just a placeholder.
+            // ในแอปจริง, ส่วนนี้จะโหลดเนื้อหา Dashboard จริง (เช่น สรุป, ลิงก์ด่วน)
+            // สำหรับตอนนี้, เป็นเพียง placeholder
         }
 
         // --- Event Listeners ---
 
-        // Registration Button
+        // ปุ่มลงทะเบียน
         registerBtn.addEventListener('click', async () => {
             hideAlert(registerAlert);
             const username = registerUsernameInput.value;
@@ -591,14 +598,14 @@
                 registerUsernameInput.value = '';
                 registerPasswordInput.value = '';
                 registerConfirmPasswordInput.value = '';
-                showPage('loginPage'); // Redirect to login page after successful registration
+                showPage('loginPage'); // เปลี่ยนเส้นทางไปหน้า login หลังจากลงทะเบียนสำเร็จ
             } catch (error) {
                 console.error('Error during registration:', error);
                 showAlert(registerAlert, `เกิดข้อผิดพลาดในการลงทะเบียน: ${error.message}`, 'error');
             }
         });
 
-        // Login Button
+        // ปุ่มเข้าสู่ระบบ
         loginBtn.addEventListener('click', async () => {
             hideAlert(loginAlert);
             const username = loginUsernameInput.value;
@@ -622,15 +629,15 @@
                     return;
                 }
 
-                setSession(data.token, data.user); // Save token and user data
-                await checkAuthAndRender(); // Re-check auth status to determine next page
+                setSession(data.token, data.user); // เก็บ token และข้อมูลผู้ใช้
+                await checkAuthAndRender(); // ตรวจสอบสถานะการยืนยันตัวตนอีกครั้งเพื่อกำหนดหน้าถัดไป
             } catch (error) {
                 console.error('Error during login:', error);
                 showAlert(loginAlert, `เกิดข้อผิดพลาดในการเข้าสู่ระบบ: ${error.message}`, 'error');
             }
         });
 
-        // Create Company Button
+        // ปุ่มสร้างบริษัท
         createCompanyBtn.addEventListener('click', async () => {
             hideAlert(setupCompanyAlert);
             const companyName = companyNameInput.value;
@@ -669,18 +676,12 @@
                 localStorage.setItem(LOCAL_STORAGE_KEY_COMPANY_ID, data.companyId);
                 localStorage.setItem(LOCAL_STORAGE_KEY_COMPANY_NAME, companyName);
                 showAlert(setupCompanyAlert, 'สร้างบริษัทสำเร็จ! โปรดสร้างบัญชีพนักงานคนแรก.', 'success');
-                // Disable company creation fields and enable employee fields
-                companyNameInput.disabled = true;
-                companyAddressInput.disabled = true;
-                companyTaxIdInput.disabled = true;
-                companyPhoneInput.disabled = true;
-                companyEmailInput.disabled = true;
-                createCompanyBtn.disabled = true;
-
-                // Show employee setup section
+                
+                // ซ่อนส่วนฟอร์มบริษัทและแสดงส่วนฟอร์มพนักงาน
+                companyFormSection.classList.add('hidden');
                 employeeSetupSection.classList.remove('hidden');
                 // Pre-fill employee email if available from user account
-                employeeEmailInput.value = currentUser.username; // Assuming username is email or can be used as such
+                employeeEmailInput.value = currentUser.username; // สมมติว่า username คือ email หรือสามารถใช้เป็น email ได้
 
             } catch (error) {
                 console.error('Error creating company:', error);
@@ -688,7 +689,7 @@
             }
         });
 
-        // Create Employee Button
+        // ปุ่มสร้างพนักงาน
         createEmployeeBtn.addEventListener('click', async () => {
             hideAlert(setupCompanyAlert);
             const firstName = employeeFirstNameInput.value;
@@ -714,7 +715,7 @@
             }
 
             try {
-                // Step 1: Create the employee record
+                // ขั้นตอนที่ 1: สร้าง record พนักงาน
                 const employeeResponse = await fetch(`${API_BASE_URL}/employees`, {
                     method: 'POST',
                     headers: {
@@ -730,12 +731,12 @@
                         address: address,
                         phone: phone,
                         email: email,
-                        department_id: null, // To be set later in full HR module
-                        position_id: null,   // To be set later in full HR module
+                        department_id: null, // จะตั้งค่าภายหลังใน HR module เต็มรูปแบบ
+                        position_id: null,   // จะตั้งค่าภายหลังใน HR module เต็มรูปแบบ
                         employment_status: 'Active',
                         hire_date: hireDate,
                         salary_base: salaryBase,
-                        user_id: currentUser.user_id // Link to current main user's ID
+                        user_id: currentUser.user_id // เชื่อมโยงกับ ID ของ main user ปัจจุบัน
                     })
                 });
                 const employeeData = await employeeResponse.json();
@@ -747,7 +748,7 @@
 
                 const newEmployeeId = employeeData.employeeId;
 
-                // Step 2: Update the Main User's record with their new employee_id
+                // ขั้นตอนที่ 2: อัปเดต record ของ Main User ด้วย employee_id ใหม่
                 const updateUserResponse = await fetch(`${API_BASE_URL}/users/${currentUser.user_id}`, {
                     method: 'PUT',
                     headers: {
@@ -760,16 +761,16 @@
 
                 if (!updateUserResponse.ok) {
                     showAlert(setupCompanyAlert, `ไม่สามารถเชื่อมโยงบัญชีพนักงานกับผู้ใช้ได้: ${updateUserData.message || 'เกิดข้อผิดพลาด'}`, 'error');
-                    // Consider rolling back employee creation here if possible
+                    // พิจารณาการ rollback การสร้างพนักงานที่นี่ถ้าเป็นไปได้
                     return;
                 }
 
-                // Update current user object in session
+                // อัปเดต object ผู้ใช้ปัจจุบันใน session
                 currentUser.employee_id = newEmployeeId;
                 sessionStorage.setItem('current_user', JSON.stringify(currentUser));
 
                 showAlert(setupCompanyAlert, 'สร้างบัญชีพนักงานสำเร็จ! คุณสามารถเริ่มต้นใช้งานระบบได้แล้ว.', 'success');
-                // Redirect to dashboard
+                // เปลี่ยนเส้นทางไปที่ dashboard
                 await renderDashboard();
 
             } catch (error) {
@@ -778,37 +779,16 @@
             }
         });
 
-
-        // Logout Button
+        // ปุ่มออกจากระบบ
         logoutBtn.addEventListener('click', () => {
-            clearSession(); // Clear token and user data
-            alert('ออกจากระบบแล้ว'); // Use a simple alert for now, replace with custom modal later
-            showPage('loginPage'); // Go back to login page
+            clearSession(); // ล้าง token และข้อมูลผู้ใช้
+            alert('ออกจากระบบแล้ว'); // ใช้ alert ง่ายๆ ไปก่อน, ค่อยเปลี่ยนเป็น custom modal ภายหลัง
+            showPage('loginPage'); // กลับไปหน้า login
         });
 
         // --- Initialization ---
-        // Run authentication check when the page loads
+        // รันการตรวจสอบการยืนยันตัวตนเมื่อหน้าโหลด
         window.addEventListener('load', checkAuthAndRender);
-
-        // Dummy fetchBranches function for initial setup. Replace with actual if needed elsewhere.
-        // This is needed in checkAuthAndRender for main user to find a default branch for dashboard display.
-        async function fetchBranches(token) {
-            try {
-                const response = await fetch(`${API_BASE_URL}/branches`, {
-                    headers: {
-                        'Authorization': `Bearer ${token}`
-                    }
-                });
-                if (!response.ok) {
-                    const errorData = await response.json();
-                    throw new Error(errorData.message || 'Failed to fetch branches');
-                }
-                return await response.json();
-            } catch (error) {
-                console.error('Error fetching branches:', error);
-                return [];
-            }
-        }
 
     </script>
 </body>
