@@ -1,0 +1,13 @@
+# Global ignores
+.DS_Store
+.env
+*.log
+
+# Node.js specific ignores for both backend and frontend
+backend/node_modules/
+frontend/node_modules/
+
+# VS Code specific ignores
+.vscode/
+
+# Any other specific files/folders to ignore
