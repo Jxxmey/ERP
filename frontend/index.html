@@ -18,15 +18,24 @@
             border-radius: 1rem; /* Rounded corners */
             box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
             padding: 2rem;
-            max-width: 450px; /* Slightly wider for forms */
+            max-width: 600px; /* Increased max-width for side-by-side forms */
             width: 90%;
+        }
+        .input-group {
+            margin-bottom: 1rem;
+        }
+        .input-group label {
+            display: block;
+            margin-bottom: 0.5rem;
+            font-size: 0.9rem;
+            font-weight: 500;
+            color: #4b5563; /* Gray 600 */
         }
         .input-field {
             width: 100%;
             padding: 0.75rem;
             border: 1px solid #d1d5db;
             border-radius: 0.5rem;
-            margin-bottom: 1rem;
             font-size: 1rem;
         }
         .btn-primary {
@@ -85,6 +94,18 @@
         .text-link:hover {
             color: #ea580c; /* Orange 600 */
         }
+        /* Flex container for side-by-side inputs */
+        .form-row {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 1rem;
+            margin-bottom: 1rem; /* Add margin below the row */
+        }
+        @media (min-width: 640px) { /* Tailwind's sm breakpoint */
+            .form-row.grid-2-cols {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
     </style>
 </head>
 <body class="flex items-center justify-center min-h-screen">
@@ -94,10 +115,19 @@
         <h2 class="text-2xl font-bold mb-6 text-gray-800">ลงทะเบียน</h2>
         <div id="registerAlert" class="alert hidden"></div>
 
-        <input type="text" id="registerUsername" class="input-field" placeholder="ชื่อผู้ใช้">
-        <input type="password" id="registerPassword" class="input-field" placeholder="รหัสผ่าน">
-        <input type="password" id="registerConfirmPassword" class="input-field" placeholder="ยืนยันรหัสผ่าน">
-        <button id="registerBtn" class="btn-primary">ลงทะเบียน</button>
+        <div class="input-group">
+            <label for="registerUsername">ชื่อผู้ใช้</label>
+            <input type="text" id="registerUsername" class="input-field">
+        </div>
+        <div class="input-group">
+            <label for="registerPassword">รหัสผ่าน</label>
+            <input type="password" id="registerPassword" class="input-field">
+        </div>
+        <div class="input-group">
+            <label for="registerConfirmPassword">ยืนยันรหัสผ่าน</label>
+            <input type="password" id="registerConfirmPassword" class="input-field">
+        </div>
+        <button id="registerBtn" class="btn-primary mt-4">ลงทะเบียน</button>
         <p class="mt-4 text-gray-600">มีบัญชีอยู่แล้ว? <span class="text-link" onclick="showPage('loginPage')">เข้าสู่ระบบที่นี่</span></p>
     </div>
 
@@ -106,9 +136,15 @@
         <h2 class="text-2xl font-bold mb-6 text-gray-800">เข้าสู่ระบบ</h2>
         <div id="loginAlert" class="alert hidden"></div>
 
-        <input type="text" id="loginUsername" class="input-field" placeholder="ชื่อผู้ใช้">
-        <input type="password" id="loginPassword" class="input-field" placeholder="รหัสผ่าน">
-        <button id="loginBtn" class="btn-primary">เข้าสู่ระบบ</button>
+        <div class="input-group">
+            <label for="loginUsername">ชื่อผู้ใช้</label>
+            <input type="text" id="loginUsername" class="input-field">
+        </div>
+        <div class="input-group">
+            <label for="loginPassword">รหัสผ่าน</label>
+            <input type="password" id="loginPassword" class="input-field">
+        </div>
+        <button id="loginBtn" class="btn-primary mt-4">เข้าสู่ระบบ</button>
         <p class="mt-4 text-gray-600">ยังไม่มีบัญชี? <span class="text-link" onclick="showPage('registrationPage')">ลงทะเบียนที่นี่</span></p>
     </div>
 
@@ -119,39 +155,97 @@
         <div id="setupCompanyAlert" class="alert hidden"></div>
 
         <h3 class="text-xl font-semibold mb-3 text-gray-700">ข้อมูลบริษัท</h3>
-        <input type="text" id="companyName" class="input-field" placeholder="ชื่อบริษัท">
-        <input type="text" id="companyAddress" class="input-field" placeholder="ที่อยู่บริษัท">
-        <input type="text" id="companyTaxId" class="input-field" placeholder="เลขประจำตัวผู้เสียภาษี">
-        <input type="text" id="companyPhone" class="input-field" placeholder="เบอร์โทรศัพท์บริษัท">
-        <input type="email" id="companyEmail" class="input-field" placeholder="อีเมลบริษัท">
+        <div class="input-group">
+            <label for="companyName">ชื่อบริษัท</label>
+            <input type="text" id="companyName" class="input-field">
+        </div>
+        <div class="input-group">
+            <label for="companyAddress">ที่อยู่บริษัท</label>
+            <input type="text" id="companyAddress" class="input-field">
+        </div>
+        <div class="form-row grid-2-cols">
+            <div class="input-group">
+                <label for="companyTaxId">เลขประจำตัวผู้เสียภาษี</label>
+                <input type="text" id="companyTaxId" class="input-field">
+            </div>
+            <div class="input-group">
+                <label for="companyPhone">เบอร์โทรศัพท์บริษัท</label>
+                <input type="text" id="companyPhone" class="input-field">
+            </div>
+        </div>
+        <div class="input-group">
+            <label for="companyEmail">อีเมลบริษัท</label>
+            <input type="email" id="companyEmail" class="input-field">
+        </div>
         <button id="createCompanyBtn" class="btn-primary mb-6">สร้างบริษัท</button>
 
-        <h3 class="text-xl font-semibold mb-3 text-gray-700">พนักงานคนแรก (ตัวคุณเอง)</h3>
-        <p class="text-gray-600 mb-4">ข้อมูลนี้จะถูกเชื่อมโยงกับบัญชีผู้ดูแลหลักของคุณ</p>
-        <input type="text" id="employeeFirstName" class="input-field" placeholder="ชื่อจริง">
-        <input type="text" id="employeeLastName" class="input-field" placeholder="นามสกุล">
-        <input type="text" id="employeeThaiId" class="input-field" placeholder="เลขบัตรประชาชน">
-        <input type="date" id="employeeDOB" class="input-field" placeholder="วันเกิด">
-        <select id="employeeGender" class="input-field">
-            <option value="">เลือกเพศ</option>
-            <option value="Male">ชาย</option>
-            <option value="Female">หญิง</option>
-            <option value="Other">อื่นๆ</option>
-        </select>
-        <input type="text" id="employeeAddress" class="input-field" placeholder="ที่อยู่พนักงาน">
-        <input type="text" id="employeePhone" class="input-field" placeholder="เบอร์โทรศัพท์พนักงาน">
-        <input type="email" id="employeeEmail" class="input-field" placeholder="อีเมลพนักงาน">
-        <input type="date" id="employeeHireDate" class="input-field" placeholder="วันที่เริ่มจ้างงาน">
-        <input type="number" id="employeeSalaryBase" class="input-field" placeholder="เงินเดือนพื้นฐาน">
-        <!-- Department and Position will be selected later in full HR module -->
-        <button id="createEmployeeBtn" class="btn-primary">สร้างบัญชีพนักงาน</button>
+        <!-- Employee Setup Section - Initially Hidden -->
+        <div id="employeeSetupSection" class="hidden">
+            <h3 class="text-xl font-semibold mb-3 text-gray-700">พนักงานคนแรก (ตัวคุณเอง)</h3>
+            <p class="text-gray-600 mb-4">ข้อมูลนี้จะถูกเชื่อมโยงกับบัญชีผู้ดูแลหลักของคุณ</p>
+            <div class="form-row grid-2-cols">
+                <div class="input-group">
+                    <label for="employeeFirstName">ชื่อจริง</label>
+                    <input type="text" id="employeeFirstName" class="input-field">
+                </div>
+                <div class="input-group">
+                    <label for="employeeLastName">นามสกุล</label>
+                    <input type="text" id="employeeLastName" class="input-field">
+                </div>
+            </div>
+            <div class="form-row grid-2-cols">
+                <div class="input-group">
+                    <label for="employeeThaiId">เลขบัตรประชาชน</label>
+                    <input type="text" id="employeeThaiId" class="input-field">
+                </div>
+                <div class="input-group">
+                    <label for="employeeDOB">วันเกิด</label>
+                    <input type="date" id="employeeDOB" class="input-field">
+                </div>
+            </div>
+            <div class="input-group">
+                <label for="employeeGender">เลือกเพศ</label>
+                <select id="employeeGender" class="input-field">
+                    <option value="">เลือกเพศ</option>
+                    <option value="Male">ชาย</option>
+                    <option value="Female">หญิง</option>
+                    <option value="Other">อื่นๆ</option>
+                </select>
+            </div>
+            <div class="input-group">
+                <label for="employeeAddress">ที่อยู่พนักงาน</label>
+                <input type="text" id="employeeAddress" class="input-field">
+            </div>
+            <div class="form-row grid-2-cols">
+                <div class="input-group">
+                    <label for="employeePhone">เบอร์โทรศัพท์พนักงาน</label>
+                    <input type="text" id="employeePhone" class="input-field">
+                </div>
+                <div class="input-group">
+                    <label for="employeeEmail">อีเมลพนักงาน</label>
+                    <input type="email" id="employeeEmail" class="input-field">
+                </div>
+            </div>
+            <div class="form-row grid-2-cols">
+                <div class="input-group">
+                    <label for="employeeHireDate">วันที่เริ่มจ้างงาน</label>
+                    <input type="date" id="employeeHireDate" class="input-field">
+                </div>
+                <div class="input-group">
+                    <label for="employeeSalaryBase">เงินเดือนพื้นฐาน</label>
+                    <input type="number" id="employeeSalaryBase" class="input-field">
+                </div>
+            </div>
+            <!-- Department and Position will be selected later in full HR module -->
+            <button id="createEmployeeBtn" class="btn-primary mt-4">สร้างบัญชีพนักงาน</button>
+        </div>
     </div>
 
     <!-- Main Application Dashboard (Simulated) -->
     <div id="mainAppDashboard" class="card text-center hidden">
         <h2 class="text-2xl font-bold mb-6 text-gray-800">ยินดีต้อนรับสู่ระบบ!</h2>
         <p class="text-gray-600 mb-4">คุณเข้าสู่ระบบในฐานะ: <span id="loggedInUserType" class="font-semibold"></span></p>
-        <p class="text-gray-600 mb-4">ชื่อผู้ใช้: <span id="loggedInUsername" class="font-semibold"></span></p>
+        <p class="text-600 mb-4">ชื่อผู้ใช้: <span id="loggedInUsername" class="font-semibold"></span></p>
         <p class="text-gray-600 mb-4">บริษัท: <span id="loggedInCompanyName" class="font-semibold"></span></p>
         <p class="text-gray-600 mb-4">สาขา: <span id="loggedInBranchName" class="font-semibold"></span></p>
         <button id="logoutBtn" class="btn-secondary">ออกจากระบบ</button>
@@ -190,6 +284,8 @@
         const companyEmailInput = document.getElementById('companyEmail');
         const createCompanyBtn = document.getElementById('createCompanyBtn');
 
+        // Employee Setup Section elements
+        const employeeSetupSection = document.getElementById('employeeSetupSection');
         const employeeFirstNameInput = document.getElementById('employeeFirstName');
         const employeeLastNameInput = document.getElementById('employeeLastName');
         const employeeThaiIdInput = document.getElementById('employeeThaiId');
@@ -381,15 +477,50 @@
                     if (companies.length === 0 || !employeeDetails) {
                         // Main user needs to set up company or their own employee record
                         showPage('companyEmployeeSetupPage');
-                        // Pre-fill employee email if available from user account
-                        employeeEmailInput.value = currentUser.username; // Assuming username is email or can be used as such
+                        // Always hide employee setup section initially when showing this page
+                        employeeSetupSection.classList.add('hidden'); 
+                        
+                        // If company already exists but employee doesn't, show employee section
+                        if (companies.length > 0 && !employeeDetails) {
+                            companyNameInput.value = companies[0].company_name;
+                            companyAddressInput.value = companies[0].address || '';
+                            companyTaxIdInput.value = companies[0].tax_id || '';
+                            companyPhoneInput.value = companies[0].phone || '';
+                            companyEmailInput.value = companies[0].email || '';
+
+                            // Disable company fields
+                            companyNameInput.disabled = true;
+                            companyAddressInput.disabled = true;
+                            companyTaxIdInput.disabled = true;
+                            companyPhoneInput.disabled = true;
+                            companyEmailInput.disabled = true;
+                            createCompanyBtn.disabled = true;
+                            showAlert(setupCompanyAlert, 'บริษัทของคุณถูกสร้างแล้ว โปรดสร้างบัญชีพนักงานคนแรก.', 'success');
+                            employeeSetupSection.classList.remove('hidden'); // Show employee section
+                        } else {
+                            // No company yet, ensure company fields are enabled
+                            companyNameInput.disabled = false;
+                            companyAddressInput.disabled = false;
+                            companyTaxIdInput.disabled = false;
+                            companyPhoneInput.disabled = false;
+                            companyEmailInput.disabled = false;
+                            createCompanyBtn.disabled = false;
+                        }
                         return;
                     } else {
                         // Main user has company and employee setup, proceed to dashboard
                         localStorage.setItem(LOCAL_STORAGE_KEY_COMPANY_ID, companies[0].company_id);
                         localStorage.setItem(LOCAL_STORAGE_KEY_COMPANY_NAME, companies[0].company_name);
-                        localStorage.setItem(LOCAL_STORAGE_KEY_BRANCH_ID, companies[0].branch_id || 'N/A'); // Assuming first branch for simplicity
-                        localStorage.setItem(LOCAL_STORAGE_KEY_BRANCH_NAME, companies[0].branch_name || 'N/A'); // Assuming first branch for simplicity
+                        // Assuming first branch for simplicity, or fetch and store a default branch
+                        const branches = await fetchBranches(currentToken); // Assuming fetchBranches exists
+                        const defaultBranch = branches.find(b => b.company_id === companies[0].company_id); // Find a branch for this company
+                        if (defaultBranch) {
+                            localStorage.setItem(LOCAL_STORAGE_KEY_BRANCH_ID, defaultBranch.branch_id);
+                            localStorage.setItem(LOCAL_STORAGE_KEY_BRANCH_NAME, defaultBranch.branch_name);
+                        } else {
+                            localStorage.setItem(LOCAL_STORAGE_KEY_BRANCH_ID, 'N/A');
+                            localStorage.setItem(LOCAL_STORAGE_KEY_BRANCH_NAME, 'N/A');
+                        }
                         renderDashboard();
                     }
                 } else {
@@ -545,6 +676,12 @@
                 companyPhoneInput.disabled = true;
                 companyEmailInput.disabled = true;
                 createCompanyBtn.disabled = true;
+
+                // Show employee setup section
+                employeeSetupSection.classList.remove('hidden');
+                // Pre-fill employee email if available from user account
+                employeeEmailInput.value = currentUser.username; // Assuming username is email or can be used as such
+
             } catch (error) {
                 console.error('Error creating company:', error);
                 showAlert(setupCompanyAlert, `เกิดข้อผิดพลาดในการสร้างบริษัท: ${error.message}`, 'error');
@@ -652,6 +789,26 @@
         // --- Initialization ---
         // Run authentication check when the page loads
         window.addEventListener('load', checkAuthAndRender);
+
+        // Dummy fetchBranches function for initial setup. Replace with actual if needed elsewhere.
+        // This is needed in checkAuthAndRender for main user to find a default branch for dashboard display.
+        async function fetchBranches(token) {
+            try {
+                const response = await fetch(`${API_BASE_URL}/branches`, {
+                    headers: {
+                        'Authorization': `Bearer ${token}`
+                    }
+                });
+                if (!response.ok) {
+                    const errorData = await response.json();
+                    throw new Error(errorData.message || 'Failed to fetch branches');
+                }
+                return await response.json();
+            } catch (error) {
+                console.error('Error fetching branches:', error);
+                return [];
+            }
+        }
 
     </script>
 </body>
