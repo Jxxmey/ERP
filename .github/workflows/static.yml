@@ -1,0 +1,815 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ERP/POS/HR Web App</title>
+    <!-- Tailwind CSS CDN for easy styling -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Inter font for a modern look -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #f3f4f6; /* Light gray background */
+        }
+        .card {
+            background-color: white;
+            border-radius: 1rem; /* Rounded corners */
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            padding: 2rem;
+            max-width: 600px; /* Increased max-width for side-by-side forms */
+            width: 90%;
+        }
+        .input-group {
+            margin-bottom: 1rem;
+        }
+        .input-group label {
+            display: block;
+            margin-bottom: 0.5rem;
+            font-size: 0.9rem;
+            font-weight: 500;
+            color: #4b5563; /* Gray 600 */
+        }
+        .input-field {
+            width: 100%;
+            padding: 0.75rem;
+            border: 1px solid #d1d5db;
+            border-radius: 0.5rem;
+            font-size: 1rem;
+        }
+        .btn-primary {
+            /* Orange color scheme */
+            background-color: #f97316; /* Orange 500 */
+            color: white;
+            padding: 0.75rem 1.5rem;
+            border-radius: 0.5rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: background-color 0.2s;
+            width: 100%;
+        }
+        .btn-primary:hover {
+            background-color: #ea580c; /* Orange 600 */
+        }
+        .btn-secondary {
+            background-color: #6b7280; /* Gray */
+            color: white;
+            padding: 0.75rem 1.5rem;
+            border-radius: 0.5rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: background-color 0.2s;
+            width: 100%;
+        }
+        .btn-secondary:hover {
+            background-color: #4b5563; /* Darker gray */
+        }
+        .alert {
+            padding: 0.75rem 1.25rem;
+            margin-bottom: 1rem;
+            border-radius: 0.5rem;
+            font-size: 0.9rem;
+            display: none; /* Hidden by default */
+        }
+        .alert-success {
+            background-color: #d1fae5; /* Green light */
+            color: #065f46; /* Green dark */
+            border: 1px solid #10b981;
+        }
+        .alert-error {
+            background-color: #fee2e2; /* Red light */
+            color: #991b1b; /* Red dark */
+            border: 1px solid #ef4444;
+        }
+        .hidden {
+            display: none;
+        }
+        .text-link {
+            /* Orange color scheme */
+            color: #f97316; /* Orange 500 */
+            cursor: pointer;
+            text-decoration: underline;
+        }
+        .text-link:hover {
+            color: #ea580c; /* Orange 600 */
+        }
+        /* Flex container for side-by-side inputs */
+        .form-row {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 1rem;
+            margin-bottom: 1rem; /* Add margin below the row */
+        }
+        @media (min-width: 640px) { /* Tailwind's sm breakpoint */
+            .form-row.grid-2-cols {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+    </style>
+</head>
+<body class="flex items-center justify-center min-h-screen">
+
+    <!-- Registration Page -->
+    <div id="registrationPage" class="card text-center">
+        <h2 class="text-2xl font-bold mb-6 text-gray-800">ลงทะเบียน</h2>
+        <div id="registerAlert" class="alert hidden"></div>
+
+        <div class="input-group">
+            <label for="registerUsername">ชื่อผู้ใช้</label>
+            <input type="text" id="registerUsername" class="input-field">
+        </div>
+        <div class="input-group">
+            <label for="registerPassword">รหัสผ่าน</label>
+            <input type="password" id="registerPassword" class="input-field">
+        </div>
+        <div class="input-group">
+            <label for="registerConfirmPassword">ยืนยันรหัสผ่าน</label>
+            <input type="password" id="registerConfirmPassword" class="input-field">
+        </div>
+        <button id="registerBtn" class="btn-primary mt-4">ลงทะเบียน</button>
+        <p class="mt-4 text-gray-600">มีบัญชีอยู่แล้ว? <span class="text-link" onclick="showPage('loginPage')">เข้าสู่ระบบที่นี่</span></p>
+    </div>
+
+    <!-- Login Page -->
+    <div id="loginPage" class="card text-center hidden">
+        <h2 class="text-2xl font-bold mb-6 text-gray-800">เข้าสู่ระบบ</h2>
+        <div id="loginAlert" class="alert hidden"></div>
+
+        <div class="input-group">
+            <label for="loginUsername">ชื่อผู้ใช้</label>
+            <input type="text" id="loginUsername" class="input-field">
+        </div>
+        <div class="input-group">
+            <label for="loginPassword">รหัสผ่าน</label>
+            <input type="password" id="loginPassword" class="input-field">
+        </div>
+        <button id="loginBtn" class="btn-primary mt-4">เข้าสู่ระบบ</button>
+        <p class="mt-4 text-gray-600">ยังไม่มีบัญชี? <span class="text-link" onclick="showPage('registrationPage')">ลงทะเบียนที่นี่</span></p>
+    </div>
+
+    <!-- Company and First Employee Setup Page (For Main User's first login) -->
+    <div id="companyEmployeeSetupPage" class="card text-left hidden">
+        <h2 class="text-2xl font-bold mb-6 text-gray-800">ตั้งค่าบริษัทและพนักงาน</h2>
+        <p class="text-gray-600 mb-4">โปรดตั้งค่าข้อมูลบริษัทและสร้างบัญชีพนักงานคนแรกของคุณ</p>
+        <div id="setupCompanyAlert" class="alert hidden"></div>
+
+        <h3 class="text-xl font-semibold mb-3 text-gray-700">ข้อมูลบริษัท</h3>
+        <div class="input-group">
+            <label for="companyName">ชื่อบริษัท</label>
+            <input type="text" id="companyName" class="input-field">
+        </div>
+        <div class="input-group">
+            <label for="companyAddress">ที่อยู่บริษัท</label>
+            <input type="text" id="companyAddress" class="input-field">
+        </div>
+        <div class="form-row grid-2-cols">
+            <div class="input-group">
+                <label for="companyTaxId">เลขประจำตัวผู้เสียภาษี</label>
+                <input type="text" id="companyTaxId" class="input-field">
+            </div>
+            <div class="input-group">
+                <label for="companyPhone">เบอร์โทรศัพท์บริษัท</label>
+                <input type="text" id="companyPhone" class="input-field">
+            </div>
+        </div>
+        <div class="input-group">
+            <label for="companyEmail">อีเมลบริษัท</label>
+            <input type="email" id="companyEmail" class="input-field">
+        </div>
+        <button id="createCompanyBtn" class="btn-primary mb-6">สร้างบริษัท</button>
+
+        <!-- Employee Setup Section - Initially Hidden -->
+        <div id="employeeSetupSection" class="hidden">
+            <h3 class="text-xl font-semibold mb-3 text-gray-700">พนักงานคนแรก (ตัวคุณเอง)</h3>
+            <p class="text-gray-600 mb-4">ข้อมูลนี้จะถูกเชื่อมโยงกับบัญชีผู้ดูแลหลักของคุณ</p>
+            <div class="form-row grid-2-cols">
+                <div class="input-group">
+                    <label for="employeeFirstName">ชื่อจริง</label>
+                    <input type="text" id="employeeFirstName" class="input-field">
+                </div>
+                <div class="input-group">
+                    <label for="employeeLastName">นามสกุล</label>
+                    <input type="text" id="employeeLastName" class="input-field">
+                </div>
+            </div>
+            <div class="form-row grid-2-cols">
+                <div class="input-group">
+                    <label for="employeeThaiId">เลขบัตรประชาชน</label>
+                    <input type="text" id="employeeThaiId" class="input-field">
+                </div>
+                <div class="input-group">
+                    <label for="employeeDOB">วันเกิด</label>
+                    <input type="date" id="employeeDOB" class="input-field">
+                </div>
+            </div>
+            <div class="input-group">
+                <label for="employeeGender">เลือกเพศ</label>
+                <select id="employeeGender" class="input-field">
+                    <option value="">เลือกเพศ</option>
+                    <option value="Male">ชาย</option>
+                    <option value="Female">หญิง</option>
+                    <option value="Other">อื่นๆ</option>
+                </select>
+            </div>
+            <div class="input-group">
+                <label for="employeeAddress">ที่อยู่พนักงาน</label>
+                <input type="text" id="employeeAddress" class="input-field">
+            </div>
+            <div class="form-row grid-2-cols">
+                <div class="input-group">
+                    <label for="employeePhone">เบอร์โทรศัพท์พนักงาน</label>
+                    <input type="text" id="employeePhone" class="input-field">
+                </div>
+                <div class="input-group">
+                    <label for="employeeEmail">อีเมลพนักงาน</label>
+                    <input type="email" id="employeeEmail" class="input-field">
+                </div>
+            </div>
+            <div class="form-row grid-2-cols">
+                <div class="input-group">
+                    <label for="employeeHireDate">วันที่เริ่มจ้างงาน</label>
+                    <input type="date" id="employeeHireDate" class="input-field">
+                </div>
+                <div class="input-group">
+                    <label for="employeeSalaryBase">เงินเดือนพื้นฐาน</label>
+                    <input type="number" id="employeeSalaryBase" class="input-field">
+                </div>
+            </div>
+            <!-- Department and Position will be selected later in full HR module -->
+            <button id="createEmployeeBtn" class="btn-primary mt-4">สร้างบัญชีพนักงาน</button>
+        </div>
+    </div>
+
+    <!-- Main Application Dashboard (Simulated) -->
+    <div id="mainAppDashboard" class="card text-center hidden">
+        <h2 class="text-2xl font-bold mb-6 text-gray-800">ยินดีต้อนรับสู่ระบบ!</h2>
+        <p class="text-gray-600 mb-4">คุณเข้าสู่ระบบในฐานะ: <span id="loggedInUserType" class="font-semibold"></span></p>
+        <p class="text-600 mb-4">ชื่อผู้ใช้: <span id="loggedInUsername" class="font-semibold"></span></p>
+        <p class="text-gray-600 mb-4">บริษัท: <span id="loggedInCompanyName" class="font-semibold"></span></p>
+        <p class="text-gray-600 mb-4">สาขา: <span id="loggedInBranchName" class="font-semibold"></span></p>
+        <button id="logoutBtn" class="btn-secondary">ออกจากระบบ</button>
+    </div>
+
+    <script>
+        // --- Configuration ---
+        const API_BASE_URL = 'http://localhost:3000/api'; // Your backend API URL
+        const LOCAL_STORAGE_KEY_COMPANY_ID = 'erp_company_id'; // Stores the main user's company ID
+        const LOCAL_STORAGE_KEY_BRANCH_ID = 'erp_branch_id'; // Stores the main user's default branch ID (optional for web, more for EXE)
+        const LOCAL_STORAGE_KEY_COMPANY_NAME = 'erp_company_name';
+        const LOCAL_STORAGE_KEY_BRANCH_NAME = 'erp_branch_name'; // For display on dashboard
+
+        // --- DOM Elements ---
+        const registrationPage = document.getElementById('registrationPage');
+        const loginPage = document.getElementById('loginPage');
+        const companyEmployeeSetupPage = document.getElementById('companyEmployeeSetupPage');
+        const mainAppDashboard = document.getElementById('mainAppDashboard');
+
+        const registerBtn = document.getElementById('registerBtn');
+        const registerUsernameInput = document.getElementById('registerUsername');
+        const registerPasswordInput = document.getElementById('registerPassword');
+        const registerConfirmPasswordInput = document.getElementById('registerConfirmPassword');
+        const registerAlert = document.getElementById('registerAlert');
+
+        const loginBtn = document.getElementById('loginBtn');
+        const loginUsernameInput = document.getElementById('loginUsername');
+        const loginPasswordInput = document.getElementById('loginPassword');
+        const loginAlert = document.getElementById('loginAlert');
+
+        const setupCompanyAlert = document.getElementById('setupCompanyAlert');
+        const companyNameInput = document.getElementById('companyName');
+        const companyAddressInput = document.getElementById('companyAddress');
+        const companyTaxIdInput = document.getElementById('companyTaxId');
+        const companyPhoneInput = document.getElementById('companyPhone');
+        const companyEmailInput = document.getElementById('companyEmail');
+        const createCompanyBtn = document.getElementById('createCompanyBtn');
+
+        // Employee Setup Section elements
+        const employeeSetupSection = document.getElementById('employeeSetupSection');
+        const employeeFirstNameInput = document.getElementById('employeeFirstName');
+        const employeeLastNameInput = document.getElementById('employeeLastName');
+        const employeeThaiIdInput = document.getElementById('employeeThaiId');
+        const employeeDOBInput = document.getElementById('employeeDOB');
+        const employeeGenderSelect = document.getElementById('employeeGender');
+        const employeeAddressInput = document.getElementById('employeeAddress');
+        const employeePhoneInput = document.getElementById('employeePhone');
+        const employeeEmailInput = document.getElementById('employeeEmail');
+        const employeeHireDateInput = document.getElementById('employeeHireDate');
+        const employeeSalaryBaseInput = document.getElementById('employeeSalaryBase');
+        const createEmployeeBtn = document.getElementById('createEmployeeBtn');
+
+        const logoutBtn = document.getElementById('logoutBtn');
+        const loggedInUserType = document.getElementById('loggedInUserType');
+        const loggedInUsername = document.getElementById('loggedInUsername');
+        const loggedInCompanyName = document.getElementById('loggedInCompanyName');
+        const loggedInBranchName = document.getElementById('loggedInBranchName'); // Will be N/A for web app unless a default branch is set
+
+        let currentUser = null; // Stores user data from JWT payload
+        let currentToken = null; // Stores JWT token
+
+        // --- Utility Functions ---
+
+        /**
+         * Displays an alert message.
+         * @param {HTMLElement} element - The alert div element.
+         * @param {string} message - The message to display.
+         * @param {string} type - 'success' or 'error'.
+         */
+        function showAlert(element, message, type) {
+            element.textContent = message;
+            element.className = `alert ${type === 'success' ? 'alert-success' : 'alert-error'}`;
+            element.style.display = 'block';
+        }
+
+        /**
+         * Hides an alert message.
+         * @param {HTMLElement} element - The alert div element.
+         */
+        function hideAlert(element) {
+            element.style.display = 'none';
+        }
+
+        /**
+         * Hides all main content pages.
+         */
+        function hideAllPages() {
+            registrationPage.classList.add('hidden');
+            loginPage.classList.add('hidden');
+            companyEmployeeSetupPage.classList.add('hidden');
+            mainAppDashboard.classList.add('hidden');
+        }
+
+        /**
+         * Shows a specific page and hides others.
+         * @param {string} pageId - The ID of the page to show.
+         */
+        function showPage(pageId) {
+            hideAllPages();
+            document.getElementById(pageId).classList.remove('hidden');
+            // Clear alerts when switching pages
+            hideAlert(registerAlert);
+            hideAlert(loginAlert);
+            hideAlert(setupCompanyAlert);
+        }
+
+        /**
+         * Stores user token and data in session storage.
+         * @param {string} token - JWT token.
+         * @param {object} user - User data.
+         */
+        function setSession(token, user) {
+            sessionStorage.setItem('jwt_token', token);
+            sessionStorage.setItem('current_user', JSON.stringify(user));
+            currentToken = token;
+            currentUser = user;
+        }
+
+        /**
+         * Clears user session.
+         */
+        function clearSession() {
+            sessionStorage.removeItem('jwt_token');
+            sessionStorage.removeItem('current_user');
+            localStorage.removeItem(LOCAL_STORAGE_KEY_COMPANY_ID);
+            localStorage.removeItem(LOCAL_STORAGE_KEY_BRANCH_ID);
+            localStorage.removeItem(LOCAL_STORAGE_KEY_COMPANY_NAME);
+            localStorage.removeItem(LOCAL_STORAGE_KEY_BRANCH_NAME);
+            currentToken = null;
+            currentUser = null;
+        }
+
+        /**
+         * Loads user session from storage.
+         */
+        function loadSession() {
+            currentToken = sessionStorage.getItem('jwt_token');
+            const userString = sessionStorage.getItem('current_user');
+            if (currentToken && userString) {
+                currentUser = JSON.parse(userString);
+            } else {
+                clearSession(); // Ensure consistency
+            }
+        }
+
+        /**
+         * Fetches companies for the logged-in main user.
+         * @returns {Promise<Array>} List of companies.
+         */
+        async function fetchCompanies() {
+            try {
+                const response = await fetch(`${API_BASE_URL}/companies`, {
+                    headers: {
+                        'Authorization': `Bearer ${currentToken}`
+                    }
+                });
+                if (!response.ok) {
+                    const errorData = await response.json();
+                    throw new Error(errorData.message || 'Failed to fetch companies');
+                }
+                return await response.json();
+            } catch (error) {
+                console.error('Error fetching companies:', error);
+                showAlert(setupCompanyAlert, `ไม่สามารถโหลดข้อมูลบริษัทได้: ${error.message}`, 'error');
+                return [];
+            }
+        }
+
+        /**
+         * Fetches employee details for the current user.
+         * @param {number} employeeId - The employee ID.
+         * @returns {Promise<object|null>} Employee details or null.
+         */
+        async function fetchEmployeeDetails(employeeId) {
+            if (!employeeId) return null;
+            try {
+                const response = await fetch(`${API_BASE_URL}/employees/${employeeId}`, {
+                    headers: {
+                        'Authorization': `Bearer ${currentToken}`
+                    }
+                });
+                if (!response.ok) {
+                    const errorData = await response.json();
+                    throw new Error(errorData.message || 'Failed to fetch employee details');
+                }
+                return await response.json();
+            } catch (error) {
+                console.error('Error fetching employee details:', error);
+                return null;
+            }
+        }
+
+
+        // --- Core Application Flow ---
+
+        /**
+         * Checks authentication status and renders the appropriate page.
+         */
+        async function checkAuthAndRender() {
+            loadSession(); // Load token and user from session storage
+
+            if (!currentToken || !currentUser) {
+                showPage('loginPage'); // No token, show login page
+                return;
+            }
+
+            // Verify token validity by making a simple authenticated request
+            try {
+                const response = await fetch(`${API_BASE_URL}/users/${currentUser.user_id}`, {
+                    headers: { 'Authorization': `Bearer ${currentToken}` }
+                });
+
+                if (!response.ok) {
+                    // Token expired or invalid, clear session and show login
+                    clearSession();
+                    showPage('loginPage');
+                    showAlert(loginAlert, 'เซสชันหมดอายุหรือโทเค็นไม่ถูกต้อง โปรดเข้าสู่ระบบอีกครั้ง.', 'error');
+                    return;
+                }
+
+                // Token is valid, proceed based on user type and setup status
+                const freshUserData = await response.json(); // Get fresh user data
+                currentUser = freshUserData; // Update currentUser with fresh data
+
+                if (currentUser.user_type === 'main') {
+                    const companies = await fetchCompanies();
+                    const employeeDetails = await fetchEmployeeDetails(currentUser.employee_id);
+
+                    if (companies.length === 0 || !employeeDetails) {
+                        // Main user needs to set up company or their own employee record
+                        showPage('companyEmployeeSetupPage');
+                        // Always hide employee setup section initially when showing this page
+                        employeeSetupSection.classList.add('hidden'); 
+                        
+                        // If company already exists but employee doesn't, show employee section
+                        if (companies.length > 0 && !employeeDetails) {
+                            companyNameInput.value = companies[0].company_name;
+                            companyAddressInput.value = companies[0].address || '';
+                            companyTaxIdInput.value = companies[0].tax_id || '';
+                            companyPhoneInput.value = companies[0].phone || '';
+                            companyEmailInput.value = companies[0].email || '';
+
+                            // Disable company fields
+                            companyNameInput.disabled = true;
+                            companyAddressInput.disabled = true;
+                            companyTaxIdInput.disabled = true;
+                            companyPhoneInput.disabled = true;
+                            companyEmailInput.disabled = true;
+                            createCompanyBtn.disabled = true;
+                            showAlert(setupCompanyAlert, 'บริษัทของคุณถูกสร้างแล้ว โปรดสร้างบัญชีพนักงานคนแรก.', 'success');
+                            employeeSetupSection.classList.remove('hidden'); // Show employee section
+                        } else {
+                            // No company yet, ensure company fields are enabled
+                            companyNameInput.disabled = false;
+                            companyAddressInput.disabled = false;
+                            companyTaxIdInput.disabled = false;
+                            companyPhoneInput.disabled = false;
+                            companyEmailInput.disabled = false;
+                            createCompanyBtn.disabled = false;
+                        }
+                        return;
+                    } else {
+                        // Main user has company and employee setup, proceed to dashboard
+                        localStorage.setItem(LOCAL_STORAGE_KEY_COMPANY_ID, companies[0].company_id);
+                        localStorage.setItem(LOCAL_STORAGE_KEY_COMPANY_NAME, companies[0].company_name);
+                        // Assuming first branch for simplicity, or fetch and store a default branch
+                        const branches = await fetchBranches(currentToken); // Assuming fetchBranches exists
+                        const defaultBranch = branches.find(b => b.company_id === companies[0].company_id); // Find a branch for this company
+                        if (defaultBranch) {
+                            localStorage.setItem(LOCAL_STORAGE_KEY_BRANCH_ID, defaultBranch.branch_id);
+                            localStorage.setItem(LOCAL_STORAGE_KEY_BRANCH_NAME, defaultBranch.branch_name);
+                        } else {
+                            localStorage.setItem(LOCAL_STORAGE_KEY_BRANCH_ID, 'N/A');
+                            localStorage.setItem(LOCAL_STORAGE_KEY_BRANCH_NAME, 'N/A');
+                        }
+                        renderDashboard();
+                    }
+                } else {
+                    // Employee or Super Admin, go directly to dashboard
+                    renderDashboard();
+                }
+
+            } catch (error) {
+                console.error('Error during auth check:', error);
+                clearSession();
+                showPage('loginPage');
+                showAlert(loginAlert, `เกิดข้อผิดพลาดในการตรวจสอบสิทธิ์: ${error.message}`, 'error');
+            }
+        }
+
+        /**
+         * Renders the main application dashboard.
+         */
+        async function renderDashboard() {
+            showPage('mainAppDashboard');
+
+            loggedInUserType.textContent = currentUser.user_type;
+            loggedInUsername.textContent = currentUser.username;
+
+            // Display company/branch info based on stored config or user data
+            const companyName = localStorage.getItem(LOCAL_STORAGE_KEY_COMPANY_NAME) || 'N/A';
+            const branchName = localStorage.getItem(LOCAL_STORAGE_KEY_BRANCH_NAME) || 'N/A';
+
+            loggedInCompanyName.textContent = companyName;
+            loggedInBranchName.textContent = branchName;
+
+            // In a real app, this would load actual dashboard content (e.g., summary, quick links)
+            // For now, it's just a placeholder.
+        }
+
+        // --- Event Listeners ---
+
+        // Registration Button
+        registerBtn.addEventListener('click', async () => {
+            hideAlert(registerAlert);
+            const username = registerUsernameInput.value;
+            const password = registerPasswordInput.value;
+            const confirmPassword = registerConfirmPasswordInput.value;
+
+            if (!username || !password || !confirmPassword) {
+                showAlert(registerAlert, 'โปรดกรอกข้อมูลให้ครบถ้วน.', 'error');
+                return;
+            }
+            if (password !== confirmPassword) {
+                showAlert(registerAlert, 'รหัสผ่านไม่ตรงกัน.', 'error');
+                return;
+            }
+
+            try {
+                const response = await fetch(`${API_BASE_URL}/auth/register`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ username, password })
+                });
+                const data = await response.json();
+
+                if (!response.ok) {
+                    showAlert(registerAlert, `ลงทะเบียนไม่สำเร็จ: ${data.message || 'เกิดข้อผิดพลาด'}`, 'error');
+                    return;
+                }
+
+                showAlert(registerAlert, 'ลงทะเบียนสำเร็จ! บัญชีของคุณเป็นเวอร์ชันทดลอง 7 วัน โปรดเข้าสู่ระบบ.', 'success');
+                registerUsernameInput.value = '';
+                registerPasswordInput.value = '';
+                registerConfirmPasswordInput.value = '';
+                showPage('loginPage'); // Redirect to login page after successful registration
+            } catch (error) {
+                console.error('Error during registration:', error);
+                showAlert(registerAlert, `เกิดข้อผิดพลาดในการลงทะเบียน: ${error.message}`, 'error');
+            }
+        });
+
+        // Login Button
+        loginBtn.addEventListener('click', async () => {
+            hideAlert(loginAlert);
+            const username = loginUsernameInput.value;
+            const password = loginPasswordInput.value;
+
+            if (!username || !password) {
+                showAlert(loginAlert, 'โปรดกรอกชื่อผู้ใช้และรหัสผ่าน.', 'error');
+                return;
+            }
+
+            try {
+                const response = await fetch(`${API_BASE_URL}/auth/login`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ username, password })
+                });
+                const data = await response.json();
+
+                if (!response.ok) {
+                    showAlert(loginAlert, `เข้าสู่ระบบไม่สำเร็จ: ${data.message || 'เกิดข้อผิดพลาด'}`, 'error');
+                    return;
+                }
+
+                setSession(data.token, data.user); // Save token and user data
+                await checkAuthAndRender(); // Re-check auth status to determine next page
+            } catch (error) {
+                console.error('Error during login:', error);
+                showAlert(loginAlert, `เกิดข้อผิดพลาดในการเข้าสู่ระบบ: ${error.message}`, 'error');
+            }
+        });
+
+        // Create Company Button
+        createCompanyBtn.addEventListener('click', async () => {
+            hideAlert(setupCompanyAlert);
+            const companyName = companyNameInput.value;
+            const companyAddress = companyAddressInput.value;
+            const companyTaxId = companyTaxIdInput.value;
+            const companyPhone = companyPhoneInput.value;
+            const companyEmail = companyEmailInput.value;
+
+            if (!companyName) {
+                showAlert(setupCompanyAlert, 'โปรดกรอกชื่อบริษัท.', 'error');
+                return;
+            }
+
+            try {
+                const response = await fetch(`${API_BASE_URL}/companies`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Authorization': `Bearer ${currentToken}`
+                    },
+                    body: JSON.stringify({
+                        company_name: companyName,
+                        address: companyAddress,
+                        tax_id: companyTaxId,
+                        phone: companyPhone,
+                        email: companyEmail
+                    })
+                });
+                const data = await response.json();
+
+                if (!response.ok) {
+                    showAlert(setupCompanyAlert, `สร้างบริษัทไม่สำเร็จ: ${data.message || 'เกิดข้อผิดพลาด'}`, 'error');
+                    return;
+                }
+
+                localStorage.setItem(LOCAL_STORAGE_KEY_COMPANY_ID, data.companyId);
+                localStorage.setItem(LOCAL_STORAGE_KEY_COMPANY_NAME, companyName);
+                showAlert(setupCompanyAlert, 'สร้างบริษัทสำเร็จ! โปรดสร้างบัญชีพนักงานคนแรก.', 'success');
+                // Disable company creation fields and enable employee fields
+                companyNameInput.disabled = true;
+                companyAddressInput.disabled = true;
+                companyTaxIdInput.disabled = true;
+                companyPhoneInput.disabled = true;
+                companyEmailInput.disabled = true;
+                createCompanyBtn.disabled = true;
+
+                // Show employee setup section
+                employeeSetupSection.classList.remove('hidden');
+                // Pre-fill employee email if available from user account
+                employeeEmailInput.value = currentUser.username; // Assuming username is email or can be used as such
+
+            } catch (error) {
+                console.error('Error creating company:', error);
+                showAlert(setupCompanyAlert, `เกิดข้อผิดพลาดในการสร้างบริษัท: ${error.message}`, 'error');
+            }
+        });
+
+        // Create Employee Button
+        createEmployeeBtn.addEventListener('click', async () => {
+            hideAlert(setupCompanyAlert);
+            const firstName = employeeFirstNameInput.value;
+            const lastName = employeeLastNameInput.value;
+            const thaiIdNo = employeeThaiIdInput.value;
+            const dateOfBirth = employeeDOBInput.value;
+            const gender = employeeGenderSelect.value;
+            const address = employeeAddressInput.value;
+            const phone = employeePhoneInput.value;
+            const email = employeeEmailInput.value;
+            const hireDate = employeeHireDateInput.value;
+            const salaryBase = employeeSalaryBaseInput.value;
+
+            if (!firstName || !lastName || !thaiIdNo || !hireDate) {
+                showAlert(setupCompanyAlert, 'โปรดกรอกข้อมูลพนักงานที่จำเป็น (ชื่อ, นามสกุล, เลขบัตรประชาชน, วันที่เริ่มจ้าง).', 'error');
+                return;
+            }
+
+            const companyId = localStorage.getItem(LOCAL_STORAGE_KEY_COMPANY_ID);
+            if (!companyId) {
+                showAlert(setupCompanyAlert, 'โปรดสร้างบริษัทก่อนสร้างพนักงาน.', 'error');
+                return;
+            }
+
+            try {
+                // Step 1: Create the employee record
+                const employeeResponse = await fetch(`${API_BASE_URL}/employees`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Authorization': `Bearer ${currentToken}`
+                    },
+                    body: JSON.stringify({
+                        first_name: firstName,
+                        last_name: lastName,
+                        thai_id_no: thaiIdNo,
+                        date_of_birth: dateOfBirth,
+                        gender: gender,
+                        address: address,
+                        phone: phone,
+                        email: email,
+                        department_id: null, // To be set later in full HR module
+                        position_id: null,   // To be set later in full HR module
+                        employment_status: 'Active',
+                        hire_date: hireDate,
+                        salary_base: salaryBase,
+                        user_id: currentUser.user_id // Link to current main user's ID
+                    })
+                });
+                const employeeData = await employeeResponse.json();
+
+                if (!employeeResponse.ok) {
+                    showAlert(setupCompanyAlert, `สร้างบัญชีพนักงานไม่สำเร็จ: ${employeeData.message || 'เกิดข้อผิดพลาด'}`, 'error');
+                    return;
+                }
+
+                const newEmployeeId = employeeData.employeeId;
+
+                // Step 2: Update the Main User's record with their new employee_id
+                const updateUserResponse = await fetch(`${API_BASE_URL}/users/${currentUser.user_id}`, {
+                    method: 'PUT',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Authorization': `Bearer ${currentToken}`
+                    },
+                    body: JSON.stringify({ employee_id: newEmployeeId })
+                });
+                const updateUserData = await updateUserResponse.json();
+
+                if (!updateUserResponse.ok) {
+                    showAlert(setupCompanyAlert, `ไม่สามารถเชื่อมโยงบัญชีพนักงานกับผู้ใช้ได้: ${updateUserData.message || 'เกิดข้อผิดพลาด'}`, 'error');
+                    // Consider rolling back employee creation here if possible
+                    return;
+                }
+
+                // Update current user object in session
+                currentUser.employee_id = newEmployeeId;
+                sessionStorage.setItem('current_user', JSON.stringify(currentUser));
+
+                showAlert(setupCompanyAlert, 'สร้างบัญชีพนักงานสำเร็จ! คุณสามารถเริ่มต้นใช้งานระบบได้แล้ว.', 'success');
+                // Redirect to dashboard
+                await renderDashboard();
+
+            } catch (error) {
+                console.error('Error creating employee or linking to user:', error);
+                showAlert(setupCompanyAlert, `เกิดข้อผิดพลาดในการสร้างพนักงาน: ${error.message}`, 'error');
+            }
+        });
+
+
+        // Logout Button
+        logoutBtn.addEventListener('click', () => {
+            clearSession(); // Clear token and user data
+            alert('ออกจากระบบแล้ว'); // Use a simple alert for now, replace with custom modal later
+            showPage('loginPage'); // Go back to login page
+        });
+
+        // --- Initialization ---
+        // Run authentication check when the page loads
+        window.addEventListener('load', checkAuthAndRender);
+
+        // Dummy fetchBranches function for initial setup. Replace with actual if needed elsewhere.
+        // This is needed in checkAuthAndRender for main user to find a default branch for dashboard display.
+        async function fetchBranches(token) {
+            try {
+                const response = await fetch(`${API_BASE_URL}/branches`, {
+                    headers: {
+                        'Authorization': `Bearer ${token}`
+                    }
+                });
+                if (!response.ok) {
+                    const errorData = await response.json();
+                    throw new Error(errorData.message || 'Failed to fetch branches');
+                }
+                return await response.json();
+            } catch (error) {
+                console.error('Error fetching branches:', error);
+                return [];
+            }
+        }
+
+    </script>
+</body>
+</html>
